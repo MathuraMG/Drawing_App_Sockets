@@ -48,7 +48,7 @@ window.addEventListener('load', function () {
 })
 
 function setup () {
-  let canvas = createCanvas(500,500);
+  let canvas = createCanvas(window.innerWidth,0.7*window.innerHeight);
   canvas.parent("canvas-container")
   background("#293241");
 }
@@ -56,15 +56,20 @@ function setup () {
 function mouseDragged() {
   mousePos = {
     x: mouseX,
-    y: mouseY
+    y: mouseY,
+    px: pmouseX,
+    py: pmouseY
   }
   socket.emit('mousePosition', mousePos);
 }
 
-function drawEllipse(x,y) {
-  ellipse(x, y, 20, 20);
+function drawEllipse(px, py, x, y) {
+  noFill();
+  stroke(255);
+  strokeWeight(10);
+  line(px, py, x, y);
 }
 
 socket.on('mousePosition', (data, err) => {
-  drawEllipse(data.x, data.y);
+  drawEllipse(data.px, data.py, data.x, data.y);
 })
